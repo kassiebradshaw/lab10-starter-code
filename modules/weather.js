@@ -12,8 +12,8 @@ function getWeather(latitude, longitude) {
   const queryParams = {
     key: process.env.WEATHER_API_KEY,
     lang: 'en',
-    lat: lat,
-    lon: lon,
+    lat: latitude,
+    lon: longitude,
     days: 5,
   };
 
@@ -23,10 +23,10 @@ function getWeather(latitude, longitude) {
     console.log('Cache miss');
     cache[key] = {};
     cache[key].timestamp = Date.now();
-    cache[key].data = superagent.get(url)
-    .then(response => parseWeather(response.body));
+    cache[key].data = superagent.get(url).query(queryParams)
+      .then(response => parseWeather(response.body));
   }
-  
+
   return cache[key].data;
 }
 
